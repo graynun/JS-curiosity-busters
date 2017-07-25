@@ -25,7 +25,7 @@
 // map, reduce, filter는 higer order function
 // higher order function
 // => 함수가 함수의 input/output(parameter/return value)
-// => 중요한 이유,
+// => 중요한 이유는
 // ==> 원하는 결과를 얻기 위해 iterator를 쓰지 않아도 된다.
 // ==> 데이터를 변화시키지 않아도 된다.
 // 즉 만들어진 이유? 혹은 가장 중요한 역할이 원본 데이터를 건드리지 않기 위함.
@@ -106,13 +106,37 @@ var reducedFilterMap = data2.reduce(function(acc, value) {
 
 // WEEK 02. OBJECT IN JS { 👀... }
 
+obj = {
+  "Mon" : 24,
+  "Tue" : 25,
+  "Wed" : 26,
+  "Thur" : 27,
+  "Fri" : 28,
+  "Sat" : 29,
+  "Sun" : 30
+};
+
 // 오브젝트 길이 리턴하기
 Object.keys(obj).length
 
 // 해당 키가 있는 지 확인하기
 obj["key"] !== undefined   // 1. undefined 활용(faster)
 obj.hasOwnProperty("key")  // 2. hasOwnProperty 활용
-"key" in obj === true      // 3. in operator 활용
+"key" in obj === true      // 3. in operator 활용(prototype chain 확인)
+
+var parent = {
+  method1 : function() {}
+};
+
+var child = (function(parentObj) {
+  var func = function() {
+    this.method2 = function() {};
+  };
+  func.prototype = parentObj;
+  return (new func());
+})(parent);
+
+// "method1" in child vs. child.hasOwnProperty("method1")
 
 // 오브젝트의 key/value 값 출력하기
 
@@ -130,7 +154,6 @@ Object.entries(obj).forEach(
     ([key, value]) => console.log(key, value)
 );
 
-
 // 3. for - in 사용하기
 for(var prop in obj) {
     if (!obj.hasOwnProperty(prop)) {
@@ -142,26 +165,6 @@ for(var prop in obj) {
 // * for ... in 루프는 임의의 순서로 객체의 속성을 반복 (따라서 인덱스 순서가 중요한 배열을 반복하는 데에는 사용 X)
 // * 순서가 중요한 경우 숫자 인덱스가 있는 for 루프를 사용해야 함 - Array.prototype.forEach() 또는 for ... of
 // * 오브젝트는 순서가 없고 for-in 루프는 배열의 인덱스가 아니라 객체의 열거 가능한 속성을 통해 수행됨.
-
-// 오브젝트 복사
-
-function copy(obj) {
-  var copy = Object.create(Object.getPrototypeOf(obj));
-  var propNames = Object.getOwnPropertyNames(obj);
-
-  propNames.forEach(function(name) {
-    var desc = Object.getOwnPropertyDescriptor(obj, name);
-    Object.defineProperty(copy, name, desc);
-  });
-
-  return copy;
-}
-
-var obj1 = { a: 1, b: 2 };
-var obj2 = copy(obj1); // obj2 looks like obj1 now
-
-// [this, bind - context]
-// 실행 컨텍스트는 스택을 형성한다.
 
 let cat = {
   sound: 'miao',
