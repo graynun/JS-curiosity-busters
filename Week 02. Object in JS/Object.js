@@ -124,19 +124,16 @@ obj["key"] !== undefined   // 1. undefined 활용(faster)
 obj.hasOwnProperty("key")  // 2. hasOwnProperty 활용
 "key" in obj === true      // 3. in operator 활용(prototype chain 확인)
 
-var parent = {
-  method1 : function() {}
+var myObj = {
+  method : function() {}
 };
 
-var child = (function(parentObj) {
-  var func = function() {
-    this.method2 = function() {};
-  };
-  func.prototype = parentObj;
-  return (new func());
-})(parent);
+myObj.hasOwnProperty('method');
+'method' in myObj;
+// true
 
-// "method1" in child vs. child.hasOwnProperty("method1")
+myObj.hasOwnProperty('valueOf');  // false
+'valueOf' in myObj;               // true
 
 // 오브젝트의 key/value 값 출력하기
 
