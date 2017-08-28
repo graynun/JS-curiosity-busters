@@ -134,7 +134,7 @@ promise1
 promise2
 setTimeout
 
-// (* Microsoft Edge, Firefox 40, iOS Safari and desktop Safari 8.0.8
+// (* 엔진의 차이: Microsoft Edge, Firefox 40, iOS Safari and desktop Safari 8.0.8
 // log setTimeout before promise1 and promise2)
 
 // Microtask에 관해 알아야 함...

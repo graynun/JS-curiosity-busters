@@ -65,7 +65,6 @@ var doubleMapped = data.map(function(item) {
   return item * 2;
 });
 
-
 // reduce —- filter : reduce로 filter 기능 구현하기
 
 var data2 = [1, 2, 3, 4, 5, 6, 7];
@@ -81,7 +80,6 @@ var evens = data2.reduce(function(acc, value) {
 var evenFiltered = data2.filter(function(item) {
   return (item % 2 === 0);
 })
-
 
 // 왜 알아야 할까?
 // 만약, 짝수만 골라서 두 배로 하고 싶다면?(map + filter)
@@ -162,6 +160,10 @@ for(var prop in obj) {
 // * for ... in 루프는 임의의 순서로 객체의 속성을 반복 (따라서 인덱스 순서가 중요한 배열을 반복하는 데에는 사용 X)
 // * 순서가 중요한 경우 숫자 인덱스가 있는 for 루프를 사용해야 함 - Array.prototype.forEach() 또는 for ... of
 // * 오브젝트는 순서가 없고 for-in 루프는 배열의 인덱스가 아니라 객체의 열거 가능한 속성을 통해 수행됨.
+
+// getOwnPropertyNames
+// for ... of (iterable) -> object는 작동은 안함,
+// for ... in ()
 
 let cat = {
   sound: 'miao',
