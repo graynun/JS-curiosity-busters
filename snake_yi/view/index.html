@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+<!-- 	<link rel="stylesheet" type="text/css" href="index.css"> -->
+	<script type="text/javascript" src="rules.js"></script>
+	<style type="text/css">
+		table {
+			border-collapse: collapse;
+		}
+
+		.grid td {
+			border: 1px solid blue;
+			padding: 15px;
+			margin: 0;
+		}
+
+		.snake {
+			background-color: black;
+		}
+	</style>
+</head>
+<body>
+	<!-- <section class="grid_dom"></section> -->
+
+	<table class="grid">
+<!-- 		<tbody>
+			<tr><td>1</td></tr>
+			<tr><td>2</td><td>3</td><td>4</td></tr>
+			<tr><td>5</td><td>6</td></tr>
+		</tbody> -->
+	</table>
+</body>
+
+
+<script type="text/javascript">
+	console.log(Date.now());
+	const gridManager = new GridManager(30, 20, document.querySelector('.grid')),
+		snake = new Snake(gridManager, 3, gridManager.width - 3, gridManager.height - 1);
+</script>
+</html>
