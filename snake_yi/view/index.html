@@ -18,6 +18,13 @@
 		.snake {
 			background-color: black;
 		}
+
+		.endPopup {
+			position: absolute;
+			width: 100px;
+			height: 50px;
+			font-size: 20px;
+		}
 	</style>
 </head>
 <body>
@@ -35,7 +42,7 @@
 
 <script type="text/javascript">
 	console.log(Date.now());
-	const gridManager = new GridManager(30, 20, document.querySelector('.grid')),
-		snake = new Snake(gridManager, 3, gridManager.width - 3, gridManager.height - 1);
+	const gameManager = new GameManager(10, 20, document.querySelector('.grid'));
+	gameManager.startGame();
 </script>
 </html>
