@@ -25,7 +25,7 @@ var highestScore = 0;
 var image        = new Image();
 image.src = "img/apple.png"
 
-// FUNCTIONS
+// INITIAL RUN
 function run() {
   snakeEating(snake, apple);
   snake.move();
@@ -51,10 +51,11 @@ function Square(x, y) {
 
   this.draw = () => {
     ctx.beginPath();
-    ctx.rect(this.x, this.y, 10, 10);
+    ctx.fillRect(this.x, this.y, 10, 10);
     ctx.strokeStyle = "green";
+    ctx.fillStyle = "green";
     ctx.stroke();
-    if(this.hasBack()) {
+    if(this.hasBack()) {   // 꼬리가 있으면 그리기
       this.back.draw();
     }
   }
@@ -65,7 +66,7 @@ function Square(x, y) {
     tail.push(this.back);
   }
   this.hasBack = () => {
-    return this.back !== null;    // ??
+    return this.back !== null;
   }
   this.copy = () => {             // ??
     if(this.hasBack()) {
@@ -77,29 +78,57 @@ function Square(x, y) {
   this.right = () => {
     this.copy();
     this.x += 10;
-    if (this.x >= 500) this.x = 0;
+    if (this.x >= 500) {
+      tail = [];
+      gameSpeed = 5;
+      score = 0;
+      this.head.back = null;
+      clearInterval(game);
+      return game = setInterval(run, 1000 / gameSpeed);
+    }
   }
   this.left = () => {
     this.copy();
     this.x -= 10;
-    if(this.x < 0) this.x = 490;
+    if(this.x < 0) {
+      tail = [];
+      gameSpeed = 5;
+      score = 0;
+      this.head.back = null;
+      clearInterval(game);
+      return game = setInterval(run, 1000 / gameSpeed);
+    }
   }
   this.up = () => {
     this.copy();
     this.y += 10;
-    if(this.y >= 500) this.y = 0;
+    if(this.y >= 500) {
+      tail = [];
+      gameSpeed = 5;
+      score = 0;
+      this.head.back = null;
+      clearInterval(game);
+      return game = setInterval(run, 1000 / gameSpeed);
+    }
   }
   this.down = () => {
     this.copy();
     this.y -= 10;
-    if(this.y < 0) this.y = 490;
+    if(this.y < 0) {
+      tail = [];
+      gameSpeed = 5;
+      score = 0;
+      this.head.back = null;
+      clearInterval(game);
+      return game = setInterval(run, 1000 / gameSpeed);
+    }
   }
 }
 
 // SNAKE CLASS
 function Snake() {
-  this.head = new Square(100, 0);
-  this.direction = "right";
+  this.head = new Square(450, 450);
+  this.direction = "left";
 
   this.right = () => { this.direction = "right" }
   this.left = () => { this.direction = "left" }
