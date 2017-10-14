@@ -3,7 +3,7 @@
 <head>
 	<title></title>
 <!-- 	<link rel="stylesheet" type="text/css" href="index.css"> -->
-	<script type="text/javascript" src="rules.js"></script>
+	<!-- <script type="text/javascript" src="rules.js"></script> -->
 	<style type="text/css">
 		table {
 			border-collapse: collapse;
@@ -40,8 +40,15 @@
 </body>
 
 
-<script type="text/javascript">
-	console.log(Date.now());
+<!-- <script type="text/javascript"> -->
+	<!-- console.log(Date.now());
+	// const gameManager = new GameManager(10, 20, document.querySelector('.grid'));
+	// gameManager.startGame(); -->
+<!-- </script> -->
+
+<script type='module'>
+	// const gridDomManager = new GridDomManager(1,2,3);
+	import GameManager from './rules.js';
 	const gameManager = new GameManager(10, 20, document.querySelector('.grid'));
 	gameManager.startGame();
 </script>
