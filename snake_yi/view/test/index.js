@@ -1,5 +1,6 @@
-const expect = require('expect.js');
+/* eslint-disable */
 
+const expect = require('expect.js');
 
 describe('SnakeGame', function(){
 	describe('ViewManager', function() {
