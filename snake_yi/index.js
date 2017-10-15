@@ -1,8 +1,6 @@
 const express = require('express'),
 	app = express();
 
-// express.static()
-
 app.use(express.static('view'));
 
 app.get('/', (req, res) => {

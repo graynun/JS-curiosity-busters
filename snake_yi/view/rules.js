@@ -16,7 +16,19 @@ export default class GameManager {
 		this.gridDomManager = new GridDomManager(this.width, this.height, dom);
 		this.snake;
 
+		this.snakeDirection = 'left';
+	}
+
+	startGame() {
+		this.snake = new Snake({
+			gameManager: this,
+			initialLength: 3,
+			initialHeadPositionX: this.width - 3,
+			initialHeadPositionY: this.height - 1
+		});
+
 		this._addKeyboardEventListener();
+		this._startSnakeMove();
 	}
 
 	_addKeyboardEventListener() {
@@ -30,24 +42,46 @@ export default class GameManager {
 
 	_changeSnakeDirection(direction) {
 		if (this._isDirectionApplicable(direction)) {
-			this.snake.setDirection(direction);
+			this.snakeDirection = direction;
 		}
 	}
 
-	// 뱀의 방향을 게임매니져만 들게 하는 것이 나을까? 이렇게 할거라면 _calculateNextHead도 게임매니져가 들고 있어야만 한다
 	_isDirectionApplicable(direction) {
-		return directionMap[this.snake.direction].includes(direction);
+		return directionMap[this.snakeDirection].includes(direction);
 	}
 
-	startGame() {
-		this.snake = new Snake({
-			gameManager: this,
-			initialLength: 3,
-			initialHeadPositionX: this.width - 3,
-			initialHeadPositionY: this.height - 1
-		});
+	_calculateSnakeNextHead(currentSnakeHead) {
+		let headPosition = currentSnakeHead;
 
-		this.startSnakeMove();
+		switch (this.snakeDirection) {
+		case 'left':
+			return [headPosition[0] - 1, headPosition[1]];
+		case 'right':
+			return [headPosition[0] + 1, headPosition[1]];
+		case 'up':
+			return [headPosition[0], headPosition[1] - 1];
+		case 'down':
+			return [headPosition[0], headPosition[1] + 1];
+		}
+	}
+
+	_isSnakePossibleToMove() {
+		let currentSnakeHeadPosition = this.snake.getCurrentHead();
+		let nextHead = this._calculateSnakeNextHead(currentSnakeHeadPosition);
+
+		return this.isNextGridIsAvailable(nextHead);
+	}
+
+	_moveSnakeForward() {
+		let currentSnakeHeadPosition = this.snake.getCurrentHead();
+		let nextHead = this._calculateSnakeNextHead(currentSnakeHeadPosition);
+
+		let snakeTail = this.snake.getCurrentTail();
+
+		this.snake.addHead(nextHead);
+		this.makeGridSnake(nextHead);
+		this.snake.removeTail(snakeTail);
+		this.makeGridNotSnake(snakeTail);
 	}
 
 	endGame() {
@@ -58,10 +92,12 @@ export default class GameManager {
 		this.stopSnakeMove();
 	}
 
-	startSnakeMove() {
+	_startSnakeMove() {
 		this.timeoutId = setInterval(() => {
-			if (this.snake.isPossibleToMove()) {
-				this.snake.moveForward();
+			// if (this.snake.isPossibleToMove()) {
+			if (this._isSnakePossibleToMove()) {
+				// this.snake.moveForward();
+				this._moveSnakeForward();
 			} else {
 				this.endGame();
 			}
@@ -72,12 +108,12 @@ export default class GameManager {
 		clearInterval(this.timeoutId);	
 	}
 
-	makeGridSnake(x, y) {
-		this.gridDomManager.makeGridSnake(x, y);
+	makeGridSnake(gridPosition) {
+		this.gridDomManager.makeGridSnake(gridPosition[0], gridPosition[1]);
 	}
 
-	makeGridNotSnake(x, y) {
-		this.gridDomManager.makeGridNotSnake(x, y);
+	makeGridNotSnake(gridPosition) {
+		this.gridDomManager.makeGridNotSnake(gridPosition[0], gridPosition[1]);
 	}
 
 	makeGridApple(x, y) {
@@ -88,7 +124,16 @@ export default class GameManager {
 		this.gridDomManager.makeGridNotApple(x, y);
 	}
 
-	checkIfNextGridIsAvailable(x, y) {
-		return (x >= 0 && x < this.width && y >= 0 && y < this.height);
+	isNextGridIsAvailable(nextHead) {
+		if (nextHead[0] < 0) return false;
+		if (nextHead[0] >= this.width) return false;
+		if (nextHead[1] < 0) return false;
+		if (nextHead[1] >= this.height) return false;
+
+		let isNextGridSnakeBody = this.snake.bodyPositionArray.some((grid) => {
+			return grid[0] === nextHead[0] && grid[1] === nextHead[1];
+		});
+
+		return isNextGridSnakeBody;
 	}
 }
