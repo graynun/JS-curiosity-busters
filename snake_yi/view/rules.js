@@ -17,6 +17,8 @@ export default class GameManager {
 		this.snake;
 
 		this.snakeDirection = 'left';
+
+		this.snakeMovedSinceChangeDirection = true;
 	}
 
 	startGame() {
@@ -34,8 +36,9 @@ export default class GameManager {
 	_addKeyboardEventListener() {
 		window.addEventListener('keydown', e => {
 			if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
-				// console.log(e.key);
-				this._changeSnakeDirection(e.key.slice(5).toLowerCase());
+				if (this.snakeMovedSinceChangeDirection) {
+					this._changeSnakeDirection(e.key.slice(5).toLowerCase());	
+				}
 			}
 		});
 	}
@@ -43,6 +46,8 @@ export default class GameManager {
 	_changeSnakeDirection(direction) {
 		if (this._isDirectionApplicable(direction)) {
 			this.snakeDirection = direction;
+			this.snakeMovedSinceChangeDirection = false;
+			// this._moveSnakeForward();
 		}
 	}
 
@@ -51,7 +56,7 @@ export default class GameManager {
 	}
 
 	_calculateSnakeNextHead(currentSnakeHead) {
-		let headPosition = currentSnakeHead;
+		const headPosition = currentSnakeHead;
 
 		switch (this.snakeDirection) {
 		case 'left':
@@ -66,22 +71,24 @@ export default class GameManager {
 	}
 
 	_isSnakePossibleToMove() {
-		let currentSnakeHeadPosition = this.snake.getCurrentHead();
-		let nextHead = this._calculateSnakeNextHead(currentSnakeHeadPosition);
+		const currentSnakeHeadPosition = this.snake.getCurrentHead();
+		const nextHead = this._calculateSnakeNextHead(currentSnakeHeadPosition);
 
 		return this.isNextGridIsAvailable(nextHead);
 	}
 
 	_moveSnakeForward() {
-		let currentSnakeHeadPosition = this.snake.getCurrentHead();
-		let nextHead = this._calculateSnakeNextHead(currentSnakeHeadPosition);
+		const currentSnakeHeadPosition = this.snake.getCurrentHead();
+		const nextHead = this._calculateSnakeNextHead(currentSnakeHeadPosition);
 
-		let snakeTail = this.snake.getCurrentTail();
+		const snakeTail = this.snake.getCurrentTail();
 
 		this.snake.addHead(nextHead);
 		this.makeGridSnake(nextHead);
 		this.snake.removeTail(snakeTail);
 		this.makeGridNotSnake(snakeTail);
+
+		this.snakeMovedSinceChangeDirection = true;
 	}
 
 	endGame() {
@@ -133,15 +140,20 @@ export default class GameManager {
 	}
 
 	isNextGridIsAvailable(nextHead) {
+		console.log("currentHead?");
+		console.log(this.snake.getCurrentHead());
+
+		console.log('nextHead?');
+		console.log(nextHead);
 		if (nextHead[0] < 0) return false;
 		if (nextHead[0] >= this.width) return false;
 		if (nextHead[1] < 0) return false;
 		if (nextHead[1] >= this.height) return false;
 
-		let isNextGridSnakeBody = this.snake.bodyPositionArray.some((grid) => {
+		const isNextGridSnakeBody = this.snake.bodyPositionArray.some((grid) => {
 			return grid[0] === nextHead[0] && grid[1] === nextHead[1];
 		});
 
-		return isNextGridSnakeBody;
+		return !isNextGridSnakeBody;
 	}
 }
