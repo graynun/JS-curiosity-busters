@@ -38,6 +38,16 @@ export default class GridDomManager {
 		selectedGrid.classList.remove('snake');	
 	}
 
+	makeGridHead(x, y) {
+		let selectedGrid = this._findGridDom(x, y);
+		selectedGrid.classList.add('head');		
+	}
+
+	makeGridNotHead(x, y) {
+		let selectedGrid = this._findGridDom(x, y);
+		selectedGrid.classList.remove('head');		
+	}
+
 	makeGridApple(x, y) {
 		let selectedGrid = this._findGridDom(x, y);
 		selectedGrid.classList.add('apple');

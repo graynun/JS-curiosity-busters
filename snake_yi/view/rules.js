@@ -116,6 +116,14 @@ export default class GameManager {
 		this.gridDomManager.makeGridNotSnake(gridPosition[0], gridPosition[1]);
 	}
 
+	makeGridHead(nextHead) {
+		this.gridDomManager.makeGridHead(nextHead[0], nextHead[1]);
+	}
+
+	makeGridNotHead(nextHead) {
+		this.gridDomManager.makeGridNotHead(nextHead[0], nextHead[1]);
+	}	
+
 	makeGridApple(x, y) {
 		this.gridDomManager.makeGridApple(x, y);
 	}

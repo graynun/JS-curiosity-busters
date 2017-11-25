@@ -30,6 +30,8 @@ export default class Snake {
 	}
 
 	_makeHead(nextHead) {
+		this.gameManager.makeGridNotHead(this.getCurrentHead());
+		this.gameManager.makeGridHead(nextHead);
 		this.bodyPositionArray.unshift(nextHead);
 	}
 
