@@ -38,4 +38,8 @@ export default class Snake {
 	removeTail(snakeTail) {
 		this.bodyPositionArray = this.bodyPositionArray.filter(v => v !== snakeTail);
 	}
+
+	isGridSnake(grid) {
+		return this.bodyPositionArray.some(bodyGrid => bodyGrid[0] === grid[0] && bodyGrid[1] === grid[1]);
+	}
 }
